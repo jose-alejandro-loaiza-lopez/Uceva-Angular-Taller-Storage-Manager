@@ -43,12 +43,7 @@ jobs:
         run: npm ci
 
       - name: Run unit tests
-        run: |
-          if find projects -name '*.spec.ts' -print -quit | grep -q .; then
-            npm test
-          else
-            echo "Aún no hay pruebas unitarias (Paso 5 pendiente)."
-          fi
+        run: npm test
 
       - name: Build library
         run: npm run build:lib
@@ -100,6 +95,12 @@ jobs:
 
       - name: Build showcase app
         run: npm run build:app -- --base-href "/${{ github.event.repository.name }}/"
+
+      - name: Generate technical documentation
+        run: npm run compodoc
+
+      - name: Include documentation in the Pages artifact
+        run: cp -r ./documentation ./dist/storage-manager-showcase/browser/documentation
 
       - name: Configure GitHub Pages SPA fallback
         run: cp ./dist/storage-manager-showcase/browser/index.html ./dist/storage-manager-showcase/browser/404.html

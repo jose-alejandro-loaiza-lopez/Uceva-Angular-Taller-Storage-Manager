@@ -34,10 +34,8 @@ jobs:
       - name: Build showcase app
         run: npm run build:app
 
+      - name: Generate technical documentation
+        run: npm run compodoc
+
       - name: Run unit tests
-        run: |
-          if find projects -name '*.spec.ts' -print -quit | grep -q .; then
-            npm test
-          else
-            echo "Aún no hay pruebas unitarias (Paso 5 pendiente)."
-          fi
+        run: npm test
