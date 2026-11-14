@@ -1,0 +1,194 @@
+<section class="page-header text-white">
+  <div class="container py-4">
+    <span class="badge rounded-pill text-bg-light text-dark mb-2">Paso 2 · LocalStorageService</span>
+    <h1 class="h2 fw-bold mb-2">
+      <i class="bi bi-database me-2" aria-hidden="true"></i>Demostración de LocalStorage
+    </h1>
+    <p class="mb-0 text-white-50">
+      Ejecuta las operaciones principales del servicio: guardar, consultar, actualizar, verificar y
+      eliminar valores serializados con JSON. Los errores se muestran con su código de
+      <code class="text-white">StorageError</code>.
+    </p>
+  </div>
+</section>
+
+<section class="container py-4">
+  <div class="row g-4">
+    <div class="col-lg-5">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white fw-semibold">
+          <i class="bi bi-sliders me-2 text-primary" aria-hidden="true"></i>Operaciones
+        </div>
+        <div class="card-body">
+          <label class="form-label fw-semibold" for="storage-key">Clave</label>
+          <input
+            id="storage-key"
+            class="form-control"
+            type="text"
+            placeholder="Ej. showcase-profile"
+            autocomplete="off"
+            [ngModel]="keyInput()"
+            (ngModelChange)="keyInput.set($event)"
+          />
+
+          <label class="form-label fw-semibold mt-3" for="storage-value">Valor</label>
+          <textarea
+            id="storage-value"
+            class="form-control font-monospace"
+            rows="7"
+            spellcheck="false"
+            [ngModel]="valueInput()"
+            (ngModelChange)="valueInput.set($event)"
+          ></textarea>
+          <div class="form-text">{{ valuePreview() }}</div>
+
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <button class="btn btn-primary" type="button" (click)="save()">
+              <i class="bi bi-save me-1" aria-hidden="true"></i>Guardar (set)
+            </button>
+            <button class="btn btn-outline-primary" type="button" (click)="update()">
+              <i class="bi bi-arrow-repeat me-1" aria-hidden="true"></i>Actualizar (update)
+            </button>
+            <button class="btn btn-outline-success" type="button" (click)="read()">
+              <i class="bi bi-search me-1" aria-hidden="true"></i>Consultar (get)
+            </button>
+            <button class="btn btn-outline-secondary" type="button" (click)="check()">
+              <i class="bi bi-question-circle me-1" aria-hidden="true"></i>Verificar (has)
+            </button>
+            <button class="btn btn-outline-danger" type="button" (click)="remove()">
+              <i class="bi bi-trash me-1" aria-hidden="true"></i>Eliminar (remove)
+            </button>
+            <button class="btn btn-danger" type="button" (click)="clear()">
+              <i class="bi bi-x-octagon me-1" aria-hidden="true"></i>Limpiar todo (clear)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white fw-semibold">
+          <i class="bi bi-terminal me-2 text-success" aria-hidden="true"></i>Resultado de consultas
+        </div>
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="text-body-secondary small">has()</span>
+            @if (exists() === null) {
+              <span class="badge text-bg-light border">Sin verificar</span>
+            } @else if (exists()) {
+              <span class="badge text-bg-success">La clave existe</span>
+            } @else {
+              <span class="badge text-bg-secondary">La clave no existe</span>
+            }
+          </div>
+
+          @if (readResult() !== null) {
+            <pre class="result-preview mb-0">{{ readResult() }}</pre>
+          } @else {
+            <p class="text-body-secondary small mb-0">
+              Usa <strong>Consultar (get)</strong> para ver aquí el valor deserializado.
+            </p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-7">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+          <span class="fw-semibold">
+            <i class="bi bi-table me-2 text-primary" aria-hidden="true"></i>Claves almacenadas
+            <span class="badge text-bg-primary ms-1">{{ entries().length }}</span>
+          </span>
+          <button class="btn btn-sm btn-outline-secondary" type="button" (click)="refresh()">
+            <i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i>Actualizar (keys)
+          </button>
+        </div>
+        <div class="card-body p-0">
+          @if (entries().length === 0) {
+            <p class="text-body-secondary text-center py-4 mb-0">
+              No hay claves almacenadas en este origen.
+            </p>
+          } @else {
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">Clave</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col" class="text-end">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (entry of entries(); track entry.key) {
+                    <tr>
+                      <td class="fw-semibold text-break">{{ entry.key }}</td>
+                      <td>
+                        <span class="badge text-bg-light border">{{ entry.type }}</span>
+                      </td>
+                      <td class="font-monospace small text-break">{{ entry.preview }}</td>
+                      <td class="text-end">
+                        <button
+                          class="btn btn-sm btn-outline-primary"
+                          type="button"
+                          (click)="selectEntry(entry.key)"
+                        >
+                          Usar
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-header bg-white fw-semibold">
+          <i class="bi bi-journal-text me-2 text-dark" aria-hidden="true"></i>Registro de operaciones
+        </div>
+        <div class="card-body">
+          @if (log().length === 0) {
+            <p class="text-body-secondary small mb-0">Todavía no se ejecutaron operaciones.</p>
+          } @else {
+            <ul class="list-unstyled mb-0 log-list">
+              @for (entry of log(); track entry.id) {
+                <li class="log-entry">
+                  <i
+                    class="bi"
+                    aria-hidden="true"
+                    [class.bi-check-circle-fill]="entry.level === 'success'"
+                    [class.bi-info-circle-fill]="entry.level === 'info'"
+                    [class.bi-x-circle-fill]="entry.level === 'error'"
+                    [class.text-success]="entry.level === 'success'"
+                    [class.text-info]="entry.level === 'info'"
+                    [class.text-danger]="entry.level === 'error'"
+                  ></i>
+                  <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between gap-2">
+                      <span class="fw-semibold">{{ entry.title }}</span>
+                      <span class="text-body-secondary small text-nowrap">{{ entry.time }}</span>
+                    </div>
+                    @if (entry.detail) {
+                      <div class="small text-body-secondary">{{ entry.detail }}</div>
+                    }
+                  </div>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+
+      <div class="alert alert-warning d-flex gap-2 mt-4 mb-0" role="alert">
+        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+        <div class="small">
+          <strong>clear()</strong> elimina todas las claves del origen actual, incluidas las de otras
+          aplicaciones que compartan el mismo dominio.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

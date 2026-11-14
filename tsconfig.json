@@ -3,11 +3,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "paths": {
-      "@josefo_pro/angular-storage-manager": [
-        "./dist/angular-storage-manager"
-      ]
-    },
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,

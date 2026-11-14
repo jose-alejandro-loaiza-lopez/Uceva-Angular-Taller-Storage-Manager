@@ -1,40 +1,54 @@
 <section class="hero text-white">
   <div class="container py-5">
     <div class="row align-items-center g-4">
-      <div class="col-lg-8">
-        <span class="badge rounded-pill text-bg-light text-dark mb-3">Angular 20 · Librería standalone</span>
+      <div class="col-lg-7">
+        <span class="badge rounded-pill text-bg-light text-dark mb-3">
+          Angular 20 · Librería publicada en NPM
+        </span>
         <h1 class="display-5 fw-bold mb-3">Storage Manager</h1>
         <p class="lead mb-4">
           Librería reutilizable para administrar <strong>LocalStorage</strong> y
-          <strong>Cache Storage</strong> desde aplicaciones Angular, con una API tipada,
-          consistente y preparada para manejar errores.
+          <strong>Cache Storage</strong> desde aplicaciones Angular, con una API tipada, consistente
+          y preparada para manejar errores.
         </p>
         <div class="d-flex flex-wrap gap-2">
-          <a class="btn btn-light" [href]="repositoryUrl" target="_blank" rel="noopener">
-            <i class="bi bi-github me-2" aria-hidden="true"></i>Repositorio
+          <a class="btn btn-light" routerLink="/local-storage">
+            <i class="bi bi-database me-2" aria-hidden="true"></i>Demo LocalStorage
           </a>
-          <a class="btn btn-outline-light" href="#api">
-            <i class="bi bi-braces me-2" aria-hidden="true"></i>API pública
+          <a class="btn btn-outline-light" routerLink="/cache-storage">
+            <i class="bi bi-cloud-arrow-down me-2" aria-hidden="true"></i>Demo Cache Storage
+          </a>
+          <a class="btn btn-outline-light" [href]="repositoryUrl" target="_blank" rel="noopener">
+            <i class="bi bi-github me-2" aria-hidden="true"></i>Repositorio
           </a>
         </div>
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-5">
         <div class="card border-0 shadow-lg">
           <div class="card-body p-4 text-body">
             <div class="d-flex align-items-center gap-2 mb-3">
               <i class="bi bi-box-seam fs-4 text-primary" aria-hidden="true"></i>
-              <span class="fw-semibold">Paquete</span>
+              <span class="fw-semibold">Paquete publicado</span>
             </div>
-            <code class="d-block text-break">&#64;josefo_pro/angular-storage-manager</code>
-            <hr />
-            <div class="d-flex justify-content-between small">
+            <code class="d-block text-break">{{ packageName }}</code>
+            <div class="d-flex justify-content-between small mt-2">
               <span class="text-body-secondary">Versión</span>
-              <span class="fw-semibold">0.1.0</span>
+              <span class="fw-semibold">{{ packageVersion }}</span>
+            </div>
+            <div class="d-flex justify-content-between small mt-2">
+              <span class="text-body-secondary">Cobertura</span>
+              <span class="fw-semibold text-success">100%</span>
             </div>
             <div class="d-flex justify-content-between small mt-2">
               <span class="text-body-secondary">Estado</span>
-              <span class="badge text-bg-warning">En desarrollo</span>
+              <span class="badge text-bg-success">Completado</span>
             </div>
+            <hr />
+            <p class="small text-body-secondary mb-1">Instalación</p>
+            <code class="d-block text-break small">{{ installCommand }}</code>
+            <a class="btn btn-sm btn-primary w-100 mt-3" [href]="npmUrl" target="_blank" rel="noopener">
+              <i class="bi bi-box-arrow-up-right me-1" aria-hidden="true"></i>Ver en NPM
+            </a>
           </div>
         </div>
       </div>
@@ -42,9 +56,9 @@
   </div>
 </section>
 
-<section class="container py-5" id="api">
+<section class="container py-5">
   <div class="row g-4">
-    <div class="col-md-4">
+    <div class="col-lg-4">
       <article class="card h-100 shadow-sm">
         <div class="card-body">
           <div class="feature-icon text-bg-primary mb-3">
@@ -52,19 +66,22 @@
           </div>
           <h2 class="h5">LocalStorageService</h2>
           <p class="text-body-secondary mb-3">
-            Operaciones para guardar, consultar, actualizar y eliminar valores primitivos u objetos
-            serializados con JSON.
+            Operaciones para guardar, consultar, actualizar, verificar y eliminar valores primitivos
+            u objetos serializados con JSON.
           </p>
-          <ul class="list-unstyled small mb-0">
+          <ul class="list-unstyled small mb-3">
             <li><i class="bi bi-check2 text-success me-2"></i>CRUD tipado</li>
             <li><i class="bi bi-check2 text-success me-2"></i>Serialización JSON</li>
             <li><i class="bi bi-check2 text-success me-2"></i>Errores con código</li>
           </ul>
+          <a class="btn btn-sm btn-primary" routerLink="/local-storage">
+            Abrir demostración <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
+          </a>
         </div>
       </article>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-lg-4">
       <article class="card h-100 shadow-sm">
         <div class="card-body">
           <div class="feature-icon text-bg-success mb-3">
@@ -72,18 +89,22 @@
           </div>
           <h2 class="h5">CacheStorageService</h2>
           <p class="text-body-secondary mb-3">
-            Administración asíncrona de cachés y respuestas HTTP para recursos de la aplicación.
+            Administración asíncrona de cachés y respuestas HTTP: crear, abrir, almacenar, consultar
+            y eliminar recursos o cachés completas.
           </p>
-          <ul class="list-unstyled small mb-0">
+          <ul class="list-unstyled small mb-3">
             <li><i class="bi bi-check2 text-success me-2"></i>Crear y borrar cachés</li>
             <li><i class="bi bi-check2 text-success me-2"></i>Guardar respuestas HTTP</li>
             <li><i class="bi bi-check2 text-success me-2"></i>Eliminar recursos</li>
           </ul>
+          <a class="btn btn-sm btn-success" routerLink="/cache-storage">
+            Abrir demostración <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
+          </a>
         </div>
       </article>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-lg-4">
       <article class="card h-100 shadow-sm">
         <div class="card-body">
           <div class="feature-icon text-bg-dark mb-3">
@@ -91,14 +112,17 @@
           </div>
           <h2 class="h5">API pública controlada</h2>
           <p class="text-body-secondary mb-3">
-            Solo se publican los servicios, contratos, modelos y errores necesarios para consumir
-            la librería.
+            El Showcase consume exclusivamente los servicios, contratos, modelos y errores expuestos
+            por la librería publicada.
           </p>
-          <ul class="list-unstyled small mb-0">
-            <li><i class="bi bi-check2 text-success me-2"></i>Servicios standalone</li>
+          <ul class="list-unstyled small mb-3">
+            <li><i class="bi bi-check2 text-success me-2"></i>Instalada desde NPM</li>
             <li><i class="bi bi-check2 text-success me-2"></i>Contratos e interfaces</li>
             <li><i class="bi bi-check2 text-success me-2"></i>Detalles internos ocultos</li>
           </ul>
+          <a class="btn btn-sm btn-outline-dark" [href]="docsUrl" target="_blank" rel="noopener">
+            Ver documentación <i class="bi bi-box-arrow-up-right ms-1" aria-hidden="true"></i>
+          </a>
         </div>
       </article>
     </div>
@@ -109,9 +133,11 @@
   <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-2 mb-3">
     <div>
       <h2 class="h4 mb-1">Estado del taller</h2>
-      <p class="text-body-secondary mb-0">Avance de los pasos definidos en la actividad.</p>
+      <p class="text-body-secondary mb-0">Los ocho pasos de la actividad están completados.</p>
     </div>
-    <span class="badge text-bg-primary align-self-start align-self-lg-auto">Pasos 1 a 4 completados</span>
+    <span class="badge text-bg-success align-self-start align-self-lg-auto">
+      <i class="bi bi-check2-circle me-1" aria-hidden="true"></i>Pasos 1 a 8 completados
+    </span>
   </div>
 
   <div class="table-responsive card shadow-sm">
@@ -131,26 +157,58 @@
             <td>{{ step.title }}</td>
             <td class="d-none d-md-table-cell text-body-secondary">{{ step.description }}</td>
             <td class="text-end">
-              <span
-                class="badge"
-                [class.text-bg-success]="step.status === 'done'"
-                [class.text-bg-secondary]="step.status === 'pending'"
-              >
-                {{ step.status === 'done' ? 'Completado' : 'Pendiente' }}
-              </span>
+              <span class="badge text-bg-success">Completado</span>
             </td>
           </tr>
         }
       </tbody>
     </table>
   </div>
+</section>
 
-  <div class="alert alert-info d-flex gap-3 mt-4 mb-0" role="alert">
-    <i class="bi bi-info-circle-fill fs-5" aria-hidden="true"></i>
+<section class="container pb-5">
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header bg-white fw-semibold">
+          <i class="bi bi-braces me-2 text-primary" aria-hidden="true"></i>API pública
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
+            <li><code>LocalStorageService</code> · CRUD tipado y serialización JSON.</li>
+            <li><code>CacheStorageService</code> · cachés y respuestas HTTP asíncronas.</li>
+            <li><code>LocalStorageServiceContract</code> y <code>CacheStorageServiceContract</code>.</li>
+            <li><code>CacheRequest</code> · URL o <code>Request</code> nativo.</li>
+            <li><code>StorageError</code> y <code>StorageErrorCode</code>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header bg-white fw-semibold">
+          <i class="bi bi-exclamation-octagon me-2 text-danger" aria-hidden="true"></i>Códigos de
+          error
+        </div>
+        <div class="card-body">
+          <div class="d-flex flex-wrap gap-2">
+            @for (code of errorCodes; track code) {
+              <span class="badge text-bg-light border font-monospace">{{ code }}</span>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-success d-flex gap-3 mt-4 mb-0" role="alert">
+    <i class="bi bi-check-circle-fill fs-5" aria-hidden="true"></i>
     <div>
-      <strong>Showcase en construcción.</strong>
-      La aplicación ya está configurada para consumir la librería desde
-      <code>&#64;josefo_pro/angular-storage-manager</code> una vez se publiquen los pasos 5 a 8.
+      <strong>Showcase conectado al paquete de NPM.</strong>
+      La aplicación importa <code>{{ packageName }}</code> desde <code>node_modules</code>, sin
+      alias hacia <code>dist/</code>. Las demostraciones ejecutan operaciones reales sobre
+      LocalStorage y Cache Storage del navegador.
     </div>
   </div>
 </section>

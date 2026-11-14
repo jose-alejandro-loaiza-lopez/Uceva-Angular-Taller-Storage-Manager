@@ -1,0 +1,26 @@
+.page-header {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(13, 110, 253, 0.45), transparent 45%),
+    linear-gradient(135deg, #0b1120 0%, #111827 55%, #1f2937 100%);
+}
+
+.result-preview {
+  max-height: 14rem;
+  overflow: auto;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background-color: var(--bs-tertiary-bg);
+  font-size: 0.8rem;
+}
+
+.log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.log-entry {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
