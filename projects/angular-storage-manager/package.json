@@ -1,0 +1,28 @@
+{
+  "name": "@josefo_pro/angular-storage-manager",
+  "version": "0.1.0",
+  "description": "Librería Angular para gestionar LocalStorage y Cache Storage con una API tipada y consistente.",
+  "peerDependencies": {
+    "@angular/common": "^20.3.0",
+    "@angular/core": "^20.3.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jose-alejandro-loaiza-lopez/Uceva-Angular-Taller-Storage-Manager.git"
+  },
+  "keywords": [
+    "angular",
+    "localstorage",
+    "cache-storage",
+    "storage",
+    "web-api"
+  ],
+  "license": "MIT"
+}

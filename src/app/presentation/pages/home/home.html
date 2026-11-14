@@ -1,0 +1,156 @@
+<section class="hero text-white">
+  <div class="container py-5">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-8">
+        <span class="badge rounded-pill text-bg-light text-dark mb-3">Angular 20 · Librería standalone</span>
+        <h1 class="display-5 fw-bold mb-3">Storage Manager</h1>
+        <p class="lead mb-4">
+          Librería reutilizable para administrar <strong>LocalStorage</strong> y
+          <strong>Cache Storage</strong> desde aplicaciones Angular, con una API tipada,
+          consistente y preparada para manejar errores.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-light" [href]="repositoryUrl" target="_blank" rel="noopener">
+            <i class="bi bi-github me-2" aria-hidden="true"></i>Repositorio
+          </a>
+          <a class="btn btn-outline-light" href="#api">
+            <i class="bi bi-braces me-2" aria-hidden="true"></i>API pública
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-lg">
+          <div class="card-body p-4 text-body">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <i class="bi bi-box-seam fs-4 text-primary" aria-hidden="true"></i>
+              <span class="fw-semibold">Paquete</span>
+            </div>
+            <code class="d-block text-break">&#64;josefo_pro/angular-storage-manager</code>
+            <hr />
+            <div class="d-flex justify-content-between small">
+              <span class="text-body-secondary">Versión</span>
+              <span class="fw-semibold">0.1.0</span>
+            </div>
+            <div class="d-flex justify-content-between small mt-2">
+              <span class="text-body-secondary">Estado</span>
+              <span class="badge text-bg-warning">En desarrollo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container py-5" id="api">
+  <div class="row g-4">
+    <div class="col-md-4">
+      <article class="card h-100 shadow-sm">
+        <div class="card-body">
+          <div class="feature-icon text-bg-primary mb-3">
+            <i class="bi bi-database" aria-hidden="true"></i>
+          </div>
+          <h2 class="h5">LocalStorageService</h2>
+          <p class="text-body-secondary mb-3">
+            Operaciones para guardar, consultar, actualizar y eliminar valores primitivos u objetos
+            serializados con JSON.
+          </p>
+          <ul class="list-unstyled small mb-0">
+            <li><i class="bi bi-check2 text-success me-2"></i>CRUD tipado</li>
+            <li><i class="bi bi-check2 text-success me-2"></i>Serialización JSON</li>
+            <li><i class="bi bi-check2 text-success me-2"></i>Errores con código</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-md-4">
+      <article class="card h-100 shadow-sm">
+        <div class="card-body">
+          <div class="feature-icon text-bg-success mb-3">
+            <i class="bi bi-cloud-arrow-down" aria-hidden="true"></i>
+          </div>
+          <h2 class="h5">CacheStorageService</h2>
+          <p class="text-body-secondary mb-3">
+            Administración asíncrona de cachés y respuestas HTTP para recursos de la aplicación.
+          </p>
+          <ul class="list-unstyled small mb-0">
+            <li><i class="bi bi-check2 text-success me-2"></i>Crear y borrar cachés</li>
+            <li><i class="bi bi-check2 text-success me-2"></i>Guardar respuestas HTTP</li>
+            <li><i class="bi bi-check2 text-success me-2"></i>Eliminar recursos</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-md-4">
+      <article class="card h-100 shadow-sm">
+        <div class="card-body">
+          <div class="feature-icon text-bg-dark mb-3">
+            <i class="bi bi-shield-check" aria-hidden="true"></i>
+          </div>
+          <h2 class="h5">API pública controlada</h2>
+          <p class="text-body-secondary mb-3">
+            Solo se publican los servicios, contratos, modelos y errores necesarios para consumir
+            la librería.
+          </p>
+          <ul class="list-unstyled small mb-0">
+            <li><i class="bi bi-check2 text-success me-2"></i>Servicios standalone</li>
+            <li><i class="bi bi-check2 text-success me-2"></i>Contratos e interfaces</li>
+            <li><i class="bi bi-check2 text-success me-2"></i>Detalles internos ocultos</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="container pb-5">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-2 mb-3">
+    <div>
+      <h2 class="h4 mb-1">Estado del taller</h2>
+      <p class="text-body-secondary mb-0">Avance de los pasos definidos en la actividad.</p>
+    </div>
+    <span class="badge text-bg-primary align-self-start align-self-lg-auto">Pasos 1 a 4 completados</span>
+  </div>
+
+  <div class="table-responsive card shadow-sm">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th scope="col" class="text-nowrap">Paso</th>
+          <th scope="col">Actividad</th>
+          <th scope="col" class="d-none d-md-table-cell">Descripción</th>
+          <th scope="col" class="text-end">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (step of steps; track step.number) {
+          <tr>
+            <td class="fw-semibold text-nowrap">{{ step.number }}</td>
+            <td>{{ step.title }}</td>
+            <td class="d-none d-md-table-cell text-body-secondary">{{ step.description }}</td>
+            <td class="text-end">
+              <span
+                class="badge"
+                [class.text-bg-success]="step.status === 'done'"
+                [class.text-bg-secondary]="step.status === 'pending'"
+              >
+                {{ step.status === 'done' ? 'Completado' : 'Pendiente' }}
+              </span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-info d-flex gap-3 mt-4 mb-0" role="alert">
+    <i class="bi bi-info-circle-fill fs-5" aria-hidden="true"></i>
+    <div>
+      <strong>Showcase en construcción.</strong>
+      La aplicación ya está configurada para consumir la librería desde
+      <code>&#64;josefo_pro/angular-storage-manager</code> una vez se publiquen los pasos 5 a 8.
+    </div>
+  </div>
+</section>
