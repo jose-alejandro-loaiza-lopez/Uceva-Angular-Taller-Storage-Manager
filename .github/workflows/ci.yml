@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: ['develop']
+  pull_request:
+    branches: ['develop', 'main']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build library
+        run: npm run build:lib
+
+      - name: Build showcase app
+        run: npm run build:app
+
+      - name: Run unit tests
+        run: |
+          if find projects -name '*.spec.ts' -print -quit | grep -q .; then
+            npm test
+          else
+            echo "Aún no hay pruebas unitarias (Paso 5 pendiente)."
+          fi
