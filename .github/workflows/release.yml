@@ -1,0 +1,114 @@
+name: Release
+
+on:
+  push:
+    branches: ['main']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish library to NPM
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Check authentication method
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "::notice::NPM_TOKEN no está configurado. Se intentará publicar con Trusted Publishing (OIDC)."
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: |
+          if find projects -name '*.spec.ts' -print -quit | grep -q .; then
+            npm test
+          else
+            echo "Aún no hay pruebas unitarias (Paso 5 pendiente)."
+          fi
+
+      - name: Build library
+        run: npm run build:lib
+
+      - name: Publish package if the version is new
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd dist/angular-storage-manager
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+
+          if npm view "${NAME}@${VERSION}" version > /dev/null 2>&1; then
+            echo "::notice::La versión ${NAME}@${VERSION} ya está publicada. Se omite la publicación."
+          else
+            npm publish --access public
+            echo "::notice::Publicada ${NAME}@${VERSION} en NPM."
+          fi
+
+  deploy:
+    name: Deploy showcase to GitHub Pages
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build library
+        run: npm run build:lib
+
+      - name: Build showcase app
+        run: npm run build:app -- --base-href "/${{ github.event.repository.name }}/"
+
+      - name: Configure GitHub Pages SPA fallback
+        run: cp ./dist/storage-manager-showcase/browser/index.html ./dist/storage-manager-showcase/browser/404.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist/storage-manager-showcase/browser
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
