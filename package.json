@@ -14,7 +14,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "compodoc": "npx compodoc -p tsconfig.doc.json"
+    "compodoc": "npx compodoc -p tsconfig.doc.json",
+    "version:patch": "npm version patch --no-git-tag-version --prefix projects/angular-storage-manager",
+    "version:minor": "npm version minor --no-git-tag-version --prefix projects/angular-storage-manager",
+    "version:major": "npm version major --no-git-tag-version --prefix projects/angular-storage-manager"
   },
   "prettier": {
     "printWidth": 100,
