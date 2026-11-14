@@ -6,30 +6,32 @@ Proyecto del curso **Arquitectura de Software** de la **Unidad Central del Valle
 
 [![npm version](https://img.shields.io/npm/v/@josefo_pro/angular-storage-manager.svg)](https://www.npmjs.com/package/@josefo_pro/angular-storage-manager)
 
-- 📦 Paquete: [`@josefo_pro/angular-storage-manager`](https://www.npmjs.com/package/@josefo_pro/angular-storage-manager)
+- 📦 Paquete: [`@josefo_pro/angular-storage-manager`](https://www.npmjs.com/package/@josefo_pro/angular-storage-manager) (`0.1.0`)
 - 🧪 Framework: Angular 20 (standalone)
-- 🚀 Showcase: aplicación Angular incluida en el workspace
+- 🚀 Showcase: <https://jose-alejandro-loaiza-lopez.github.io/Uceva-Angular-Taller-Storage-Manager/>
+- 📚 Documentación técnica: <https://jose-alejandro-loaiza-lopez.github.io/Uceva-Angular-Taller-Storage-Manager/documentation/>
 
 ## 📌 Estado del proyecto
 
-| Paso | Actividad                          | Estado     |
-| ---- | ---------------------------------- | ---------- |
-| 1    | Creación y configuración           | ✅ Hecho   |
-| 2    | Servicio LocalStorage              | ✅ Hecho   |
-| 3    | Servicio Cache Storage             | ✅ Hecho   |
-| 4    | Configuración de la API pública    | ✅ Hecho   |
-| 5    | Pruebas unitarias (100% cobertura) | ⏳ Pendiente |
-| 6    | Documentación técnica (Compodoc)   | ⏳ Pendiente |
-| 7    | Publicación en NPM                 | ✅ Hecho (`0.1.0`) |
-| 8    | Showcase consumiendo NPM           | ⏳ Pendiente |
+| Paso | Actividad                          | Estado                                                       |
+| ---- | ---------------------------------- | ------------------------------------------------------------ |
+| 1    | Creación y configuración           | ✅ Hecho                                                     |
+| 2    | Servicio LocalStorage              | ✅ Hecho                                                     |
+| 3    | Servicio Cache Storage             | ✅ Hecho                                                     |
+| 4    | Configuración de la API pública    | ✅ Hecho                                                     |
+| 5    | Pruebas unitarias (100% cobertura) | ✅ Hecho (84 pruebas)                                        |
+| 6    | Documentación técnica (Compodoc)   | ✅ Hecho                                                     |
+| 7    | Publicación en NPM                 | ✅ Hecho (`0.1.0`)                                           |
+| 8    | Showcase consumiendo NPM           | ✅ Hecho                                                     |
 
-> El workflow de publicación automática está activo en `main` y publica la librería en NPM cuando la versión aún no existe en el registro.
+> El workflow de publicación automática está activo en `main`: publica la librería en NPM cuando la versión aún no existe y despliega el Showcase y la documentación en GitHub Pages.
 
 ## 🧱 Estructura del workspace
 
 ```text
 angular-storage-manager/
 ├── projects/angular-storage-manager/       # Librería publicable
+│   ├── README.md                           # Documentación del paquete
 │   └── src/
 │       ├── public-api.ts                   # API pública (Paso 4)
 │       └── lib/
@@ -40,9 +42,13 @@ angular-storage-manager/
 │           │   └── models/                 # Modelos públicos
 │           └── infrastructure/tokens/      # Tokens internos (no se publican)
 ├── src/                                    # Aplicación Showcase (Angular)
-│   └── app/presentation/pages/home/        # Página inicial de ejemplo
+│   └── app/presentation/pages/
+│       ├── home/                           # Portada y estado del taller
+│       ├── local-storage-demo/             # Demostración de LocalStorage
+│       └── cache-storage-demo/             # Demostración de Cache Storage
 ├── .github/workflows/                      # CI, release NPM y despliegue Pages
 ├── jest.config.js                          # Configuración de pruebas (Paso 5)
+├── tsconfig.doc.json                       # Configuración de Compodoc (Paso 6)
 └── package.json
 ```
 
@@ -51,6 +57,7 @@ angular-storage-manager/
 - Node.js 20.19+, 22.12+ o 24+
 - npm 10+
 - Angular CLI 20 (opcional, los scripts usan la versión local)
+- Navegador con soporte de `Cache Storage` (contexto seguro: HTTPS o `localhost`)
 
 ```bash
 node --version
@@ -60,36 +67,76 @@ npm --version
 ## 🚀 Puesta en marcha
 
 ```bash
-# 1. Instalar dependencias
+# 1. Instalar dependencias (incluye la librería publicada desde NPM)
 npm install
 
-# 2. Compilar la librería (la app la consume desde dist/)
-npm run build:lib
-
-# 3. Levantar la aplicación Showcase
+# 2. Levantar la aplicación Showcase
 npm start
 ```
 
 La aplicación estará disponible en `http://localhost:4200/`.
 
-> Mientras se implementa el Paso 8, la app muestra una página informativa con el estado del taller. Para consumir la librería desde la app, primero debe existir el build en `dist/angular-storage-manager` (`npm run build:lib`).
+El Showcase importa `@josefo_pro/angular-storage-manager` directamente desde `node_modules`; **no** utiliza alias hacia `dist/`. La dependencia está declarada en el `package.json` raíz:
+
+```json
+"@josefo_pro/angular-storage-manager": "^0.1.0"
+```
+
+Para compilar la librería de forma local (por ejemplo, mientras se desarrolla una nueva versión) o generar el build completo:
+
+```bash
+npm run build:lib   # genera dist/angular-storage-manager
+npm run build       # librería + aplicación Showcase
+```
 
 ## 🛠️ Scripts disponibles
 
-| Comando                 | Descripción                                                        |
-| ----------------------- | ------------------------------------------------------------------ |
-| `npm start`             | Ejecuta la aplicación Showcase en modo desarrollo.                 |
-| `npm run build`         | Compila la librería y luego la aplicación.                         |
-| `npm run build:lib`     | Compila la librería en `dist/angular-storage-manager`.             |
-| `npm run build:app`     | Compila la aplicación Showcase.                                    |
-| `npm run build:dev`     | Compila la librería en modo watch.                                 |
-| `npm test`              | Ejecuta las pruebas unitarias con Jest.                            |
-| `npm run test:watch`    | Ejecuta Jest en modo watch.                                        |
-| `npm run test:coverage` | Genera el reporte de cobertura.                                    |
-| `npm run compodoc`      | Genera la documentación técnica con Compodoc.                      |
-| `npm run version:patch` | Sube la versión patch de la librería (ej. `0.1.0` → `0.1.1`).     |
-| `npm run version:minor` | Sube la versión minor de la librería (ej. `0.1.0` → `0.2.0`).     |
-| `npm run version:major` | Sube la versión major de la librería (ej. `0.1.0` → `1.0.0`).     |
+| Comando                 | Descripción                                                             |
+| ----------------------- | ----------------------------------------------------------------------- |
+| `npm start`             | Ejecuta la aplicación Showcase en modo desarrollo.                      |
+| `npm run build`         | Compila la librería y luego la aplicación.                              |
+| `npm run build:lib`     | Compila la librería en `dist/angular-storage-manager`.                  |
+| `npm run build:app`     | Compila la aplicación Showcase.                                         |
+| `npm run build:dev`     | Compila la librería en modo watch.                                      |
+| `npm test`              | Ejecuta las pruebas unitarias con Jest y valida la cobertura.           |
+| `npm run test:watch`    | Ejecuta Jest en modo watch.                                             |
+| `npm run test:coverage` | Genera el reporte de cobertura en `coverage/`.                          |
+| `npm run compodoc`      | Genera la documentación técnica en `documentation/`.                    |
+| `npm run version:patch` | Sube la versión patch de la librería (ej. `0.1.0` → `0.1.1`).          |
+| `npm run version:minor` | Sube la versión minor de la librería (ej. `0.1.0` → `0.2.0`).          |
+| `npm run version:major` | Sube la versión major de la librería (ej. `0.1.0` → `1.0.0`).          |
+
+## 🧪 Pruebas unitarias
+
+Las pruebas cubren ambos servicios, los tokens internos y el modelo de errores. La configuración de Jest exige **100% de cobertura** en statements, branches, functions y lines, por lo que el comando falla si la cobertura baja.
+
+```bash
+npm test                # ejecuta las 84 pruebas y valida el umbral
+npm run test:coverage   # genera el reporte HTML en coverage/
+```
+
+Escenarios cubiertos:
+
+- Operaciones exitosas de `LocalStorageService` (`set`, `get`, `has`, `update`, `remove`, `clear`, `keys`).
+- Valores primitivos, objetos, `null`, `undefined` y contenido no serializable.
+- Errores del navegador (`QuotaExceededError`, `SecurityError`), JSON inválido y entorno sin `LocalStorage`.
+- Operaciones exitosas y errores de `CacheStorageService` (cachés inexistentes, recursos ausentes, fallos nativos).
+- Entornos sin `Cache Storage` y preservación de errores `StorageError`.
+- Resolución segura de los tokens internos cuando el navegador no está disponible o bloquea el acceso.
+
+## 📚 Documentación técnica
+
+La documentación de servicios, métodos, parámetros, interfaces y modelos se genera con **Compodoc**:
+
+```bash
+npm run compodoc
+```
+
+El resultado se escribe en `documentation/` y el workflow de release lo publica junto al Showcase en GitHub Pages:
+
+<https://jose-alejandro-loaiza-lopez.github.io/Uceva-Angular-Taller-Storage-Manager/documentation/>
+
+La documentación de uso, instalación y ejemplos de la librería está en [`projects/angular-storage-manager/README.md`](projects/angular-storage-manager/README.md).
 
 ## 🔌 API pública
 
@@ -151,7 +198,7 @@ Los tokens de inyección y los detalles internos **no** forman parte de la API p
 
 ## 🌿 Estrategia de ramas
 
-- **`main`**: rama estable y **rama por defecto del repositorio**. Cada push (merge desde `develop`) publica la librería en NPM si la versión es nueva y, después, despliega el Showcase en GitHub Pages.
+- **`main`**: rama estable y **rama por defecto del repositorio**. Cada push (merge desde `develop`) publica la librería en NPM si la versión es nueva y, después, despliega el Showcase y la documentación en GitHub Pages.
 - **`develop`**: rama de desarrollo. Aquí se integran las funcionalidades antes de pasar a `main`.
 
 Flujo recomendado:
@@ -187,8 +234,8 @@ ci: cambios en integración continua
 
 ## ⚙️ CI/CD
 
-- `.github/workflows/ci.yml`: compila la librería y la app, y ejecuta las pruebas en `develop` y Pull Requests.
-- `.github/workflows/release.yml`: se ejecuta en `main`. Publica la librería en NPM (solo si la versión es nueva) y, cuando termina, despliega el Showcase en GitHub Pages.
+- `.github/workflows/ci.yml`: compila la librería y la app, genera la documentación con Compodoc y ejecuta las pruebas en `develop` y Pull Requests.
+- `.github/workflows/release.yml`: se ejecuta en `main`. Publica la librería en NPM (solo si la versión es nueva) y, cuando termina, despliega el Showcase y la documentación en GitHub Pages.
 
 ## 📦 Publicación automática en NPM
 
@@ -209,7 +256,7 @@ El flujo de release es:
    - compila la librería,
    - verifica si `@josefo_pro/angular-storage-manager@X.Y.Z` ya existe en NPM,
    - si la versión es nueva, ejecuta `npm publish --access public`,
-   - y al final despliega el Showcase en GitHub Pages.
+   - y al final despliega el Showcase y la documentación en GitHub Pages.
 
 Si la versión no cambió, la publicación se omite y el despliegue continúa.
 
@@ -242,7 +289,7 @@ Con esa configuración, npm autentica el workflow mediante OIDC y ya no es neces
 
 ### Versión que consume el Showcase
 
-Cuando el Showcase consuma el paquete desde NPM, la versión instalada se define en el `package.json` raíz. Si subes de `0.1.x` a `0.2.0`, actualiza también la dependencia:
+La versión instalada se define en el `package.json` raíz. Si subes de `0.1.x` a `0.2.0`, actualiza también la dependencia:
 
 ```bash
 npm install @josefo_pro/angular-storage-manager@^0.2.0
@@ -256,18 +303,16 @@ El despliegue se habilita una sola vez en **Settings → Pages → Source: GitHu
 https://jose-alejandro-loaiza-lopez.github.io/Uceva-Angular-Taller-Storage-Manager/
 ```
 
-## ✅ Pendientes (pasos 5 a 8)
+La documentación de Compodoc se publica en:
 
-- [ ] **Paso 5:** pruebas unitarias de ambos servicios con cobertura del 100% (Jest ya está configurado).
-- [ ] **Paso 6:** documentación con Compodoc y ampliación del README de la librería con ejemplos completos.
-- [x] **Paso 7:** publicar la versión inicial en NPM (`@josefo_pro/angular-storage-manager@0.1.0`).
-- [ ] **Paso 8:** implementar el Showcase consumiendo la librería **desde NPM**.
-
-> Para el Paso 8 se debe instalar el paquete publicado y eliminar el alias de `tsconfig.json` que apunta a `dist/`, de modo que la app consuma realmente el paquete de NPM.
+```text
+https://jose-alejandro-loaiza-lopez.github.io/Uceva-Angular-Taller-Storage-Manager/documentation/
+```
 
 ## 👥 Integrantes
 
-- _(Completar con los nombres del grupo)_
+- Angel Julian Cuero Jimenez
+- Jose Alejandro Loaiza Lopez
 
 ## 📄 Licencia
 
