@@ -151,8 +151,8 @@ Los tokens de inyección y los detalles internos **no** forman parte de la API p
 
 ## 🌿 Estrategia de ramas
 
-- **`main`**: rama de release. Cada push (merge desde `develop`) publica la librería en NPM si la versión es nueva y, después, despliega el Showcase en GitHub Pages.
-- **`develop`**: rama de desarrollo y rama por defecto del repositorio. Aquí se integran las funcionalidades.
+- **`main`**: rama estable y **rama por defecto del repositorio**. Cada push (merge desde `develop`) publica la librería en NPM si la versión es nueva y, después, despliega el Showcase en GitHub Pages.
+- **`develop`**: rama de desarrollo. Aquí se integran las funcionalidades antes de pasar a `main`.
 
 Flujo recomendado:
 
