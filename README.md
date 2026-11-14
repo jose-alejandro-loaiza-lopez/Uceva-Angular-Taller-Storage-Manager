@@ -4,7 +4,9 @@ Librería reutilizable en Angular para administrar el almacenamiento del navegad
 
 Proyecto del curso **Arquitectura de Software** de la **Unidad Central del Valle del Cauca (UCEVA)**.
 
-- 📦 Paquete: `@josefo_pro/angular-storage-manager`
+[![npm version](https://img.shields.io/npm/v/@josefo_pro/angular-storage-manager.svg)](https://www.npmjs.com/package/@josefo_pro/angular-storage-manager)
+
+- 📦 Paquete: [`@josefo_pro/angular-storage-manager`](https://www.npmjs.com/package/@josefo_pro/angular-storage-manager)
 - 🧪 Framework: Angular 20 (standalone)
 - 🚀 Showcase: aplicación Angular incluida en el workspace
 
@@ -18,10 +20,10 @@ Proyecto del curso **Arquitectura de Software** de la **Unidad Central del Valle
 | 4    | Configuración de la API pública    | ✅ Hecho   |
 | 5    | Pruebas unitarias (100% cobertura) | ⏳ Pendiente |
 | 6    | Documentación técnica (Compodoc)   | ⏳ Pendiente |
-| 7    | Publicación en NPM                 | ⏳ Pendiente* |
+| 7    | Publicación en NPM                 | ✅ Hecho (`0.1.0`) |
 | 8    | Showcase consumiendo NPM           | ⏳ Pendiente |
 
-> \* El workflow de publicación automática ya está configurado. Solo falta configurar la autenticación con NPM (`NPM_TOKEN` o Trusted Publishing).
+> El workflow de publicación automática está activo en `main` y publica la librería en NPM cuando la versión aún no existe en el registro.
 
 ## 🧱 Estructura del workspace
 
@@ -258,7 +260,7 @@ https://jose-alejandro-loaiza-lopez.github.io/Uceva-Angular-Taller-Storage-Manag
 
 - [ ] **Paso 5:** pruebas unitarias de ambos servicios con cobertura del 100% (Jest ya está configurado).
 - [ ] **Paso 6:** documentación con Compodoc y ampliación del README de la librería con ejemplos completos.
-- [ ] **Paso 7:** configurar el secret `NPM_TOKEN` y publicar la versión inicial (el workflow ya está listo).
+- [x] **Paso 7:** publicar la versión inicial en NPM (`@josefo_pro/angular-storage-manager@0.1.0`).
 - [ ] **Paso 8:** implementar el Showcase consumiendo la librería **desde NPM**.
 
 > Para el Paso 8 se debe instalar el paquete publicado y eliminar el alias de `tsconfig.json` que apunta a `dist/`, de modo que la app consuma realmente el paquete de NPM.
