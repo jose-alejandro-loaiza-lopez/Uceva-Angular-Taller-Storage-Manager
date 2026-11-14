@@ -18,10 +18,10 @@ Proyecto del curso **Arquitectura de Software** de la **Unidad Central del Valle
 | 4    | Configuración de la API pública    | ✅ Hecho   |
 | 5    | Pruebas unitarias (100% cobertura) | ⏳ Pendiente |
 | 6    | Documentación técnica (Compodoc)   | ⏳ Pendiente |
-| 7    | Publicación en NPM                 | ⏳ Pendiente |
+| 7    | Publicación en NPM                 | ⏳ Pendiente* |
 | 8    | Showcase consumiendo NPM           | ⏳ Pendiente |
 
-> Los pasos 5 a 8 están preparados para que otro integrante del grupo los implemente.
+> \* El workflow de publicación automática ya está configurado. Solo falta configurar la autenticación con NPM (`NPM_TOKEN` o Trusted Publishing).
 
 ## 🧱 Estructura del workspace
 
@@ -39,7 +39,7 @@ angular-storage-manager/
 │           └── infrastructure/tokens/      # Tokens internos (no se publican)
 ├── src/                                    # Aplicación Showcase (Angular)
 │   └── app/presentation/pages/home/        # Página inicial de ejemplo
-├── .github/workflows/                      # CI y despliegue en GitHub Pages
+├── .github/workflows/                      # CI, release NPM y despliegue Pages
 ├── jest.config.js                          # Configuración de pruebas (Paso 5)
 └── package.json
 ```
@@ -85,6 +85,9 @@ La aplicación estará disponible en `http://localhost:4200/`.
 | `npm run test:watch`    | Ejecuta Jest en modo watch.                                        |
 | `npm run test:coverage` | Genera el reporte de cobertura.                                    |
 | `npm run compodoc`      | Genera la documentación técnica con Compodoc.                      |
+| `npm run version:patch` | Sube la versión patch de la librería (ej. `0.1.0` → `0.1.1`).     |
+| `npm run version:minor` | Sube la versión minor de la librería (ej. `0.1.0` → `0.2.0`).     |
+| `npm run version:major` | Sube la versión major de la librería (ej. `0.1.0` → `1.0.0`).     |
 
 ## 🔌 API pública
 
@@ -146,7 +149,7 @@ Los tokens de inyección y los detalles internos **no** forman parte de la API p
 
 ## 🌿 Estrategia de ramas
 
-- **`main`**: rama de producción. Cada push dispara el despliegue en GitHub Pages.
+- **`main`**: rama de release. Cada push (merge desde `develop`) publica la librería en NPM si la versión es nueva y, después, despliega el Showcase en GitHub Pages.
 - **`develop`**: rama de desarrollo y rama por defecto del repositorio. Aquí se integran las funcionalidades.
 
 Flujo recomendado:
@@ -164,7 +167,7 @@ git commit -m "feat: agrega mi funcionalidad"
 git push -u origin feat/mi-funcionalidad
 ```
 
-Luego se abre un Pull Request hacia `develop`. Cuando la versión esté estable, se integra `develop` en `main` para desplegar.
+Luego se abre un Pull Request hacia `develop`. Cuando la versión esté estable, se integra `develop` en `main` para publicar en NPM y desplegar el Showcase.
 
 ### Conventional Commits
 
@@ -183,15 +186,69 @@ ci: cambios en integración continua
 ## ⚙️ CI/CD
 
 - `.github/workflows/ci.yml`: compila la librería y la app, y ejecuta las pruebas en `develop` y Pull Requests.
-- `.github/workflows/deploy-github-pages.yml`: compila y publica el Showcase en GitHub Pages desde `main`.
+- `.github/workflows/release.yml`: se ejecuta en `main`. Publica la librería en NPM (solo si la versión es nueva) y, cuando termina, despliega el Showcase en GitHub Pages.
 
-Para habilitar el despliegue:
+## 📦 Publicación automática en NPM
 
-1. Ve a **Settings → Pages**.
-2. En **Source**, selecciona **GitHub Actions**.
-3. Haz push a `main` o ejecuta el workflow manualmente desde **Actions**.
+El flujo de release es:
 
-URL esperada:
+1. En `develop`, sube la versión de la librería:
+
+   ```bash
+   npm run version:patch   # o version:minor / version:major
+   git add projects/angular-storage-manager/package.json
+   git commit -m "chore(release): v0.1.1"
+   git push origin develop
+   ```
+
+2. Abre y mergea el Pull Request `develop → main`.
+3. El workflow **Release**:
+   - ejecuta las pruebas,
+   - compila la librería,
+   - verifica si `@josefo_pro/angular-storage-manager@X.Y.Z` ya existe en NPM,
+   - si la versión es nueva, ejecuta `npm publish --access public`,
+   - y al final despliega el Showcase en GitHub Pages.
+
+Si la versión no cambió, la publicación se omite y el despliegue continúa.
+
+### Configuración inicial (una sola vez)
+
+1. Crea un **Granular Access Token** en NPM:
+   - npmjs.com → **Access Tokens** → **Generate New Token** → **Granular Access Token**.
+   - Nombre: `github-actions-storage-manager`.
+   - Expiración: la que prefieras (por ejemplo, 90 días).
+   - **Packages and scopes:** selecciona el scope `@josefo_pro` con permiso **Read and write**.
+   - Activa **Bypass 2FA** para que el workflow pueda publicar sin intervención manual.
+2. En GitHub: **Settings → Secrets and variables → Actions → New repository secret**.
+   - Nombre: `NPM_TOKEN`
+   - Valor: el token de NPM.
+3. Verifica que el scope `@josefo_pro` exista en NPM y que tu cuenta tenga permisos para publicar.
+
+> Debes configurar al menos uno de los dos métodos. Si no hay `NPM_TOKEN` ni Trusted Publishing, el job de publicación falla y el despliegue de Pages no se ejecuta.
+>
+> Nota: npm eliminó los tokens clásicos en noviembre de 2025; por eso se debe usar un token granular.
+
+### Alternativa recomendada: Trusted Publishing (OIDC)
+
+Cuando la librería ya exista en NPM, puedes eliminar el token y configurar **Trusted Publishing** en npmjs.com → tu paquete → **Settings → Trusted publishing**, usando:
+
+- Organización o usuario: `jose-alejandro-loaiza-lopez`
+- Repositorio: `Uceva-Angular-Taller-Storage-Manager`
+- Workflow: `release.yml`
+
+Con esa configuración, npm autentica el workflow mediante OIDC y ya no es necesario guardar un token de larga duración.
+
+### Versión que consume el Showcase
+
+Cuando el Showcase consuma el paquete desde NPM, la versión instalada se define en el `package.json` raíz. Si subes de `0.1.x` a `0.2.0`, actualiza también la dependencia:
+
+```bash
+npm install @josefo_pro/angular-storage-manager@^0.2.0
+```
+
+### GitHub Pages
+
+El despliegue se habilita una sola vez en **Settings → Pages → Source: GitHub Actions**. La URL es:
 
 ```text
 https://jose-alejandro-loaiza-lopez.github.io/Uceva-Angular-Taller-Storage-Manager/
@@ -201,7 +258,7 @@ https://jose-alejandro-loaiza-lopez.github.io/Uceva-Angular-Taller-Storage-Manag
 
 - [ ] **Paso 5:** pruebas unitarias de ambos servicios con cobertura del 100% (Jest ya está configurado).
 - [ ] **Paso 6:** documentación con Compodoc y ampliación del README de la librería con ejemplos completos.
-- [ ] **Paso 7:** compilar la librería y publicarla en NPM con `npm publish --access public`.
+- [ ] **Paso 7:** configurar el secret `NPM_TOKEN` y publicar la versión inicial (el workflow ya está listo).
 - [ ] **Paso 8:** implementar el Showcase consumiendo la librería **desde NPM**.
 
 > Para el Paso 8 se debe instalar el paquete publicado y eliminar el alias de `tsconfig.json` que apunta a `dist/`, de modo que la app consuma realmente el paquete de NPM.
