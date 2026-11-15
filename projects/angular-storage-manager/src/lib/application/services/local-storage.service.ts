@@ -22,6 +22,11 @@ import { LOCAL_STORAGE } from '../../infrastructure/tokens/local-storage.token';
  */
 @Injectable({ providedIn: 'root' })
 export class LocalStorageService implements LocalStorageServiceContract {
+  /**
+   * Almacenamiento local resuelto para el entorno actual.
+   *
+   * Es `null` cuando el navegador no lo expone (SSR o acceso bloqueado).
+   */
   private readonly storage = inject(LOCAL_STORAGE);
 
   /**

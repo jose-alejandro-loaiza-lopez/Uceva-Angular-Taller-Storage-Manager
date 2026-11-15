@@ -22,6 +22,11 @@ import { CACHE_STORAGE } from '../../infrastructure/tokens/cache-storage.token';
  */
 @Injectable({ providedIn: 'root' })
 export class CacheStorageService implements CacheStorageServiceContract {
+  /**
+   * API `CacheStorage` resuelta para el entorno actual.
+   *
+   * Es `null` cuando el navegador no la soporta.
+   */
   private readonly cacheStorage = inject(CACHE_STORAGE);
 
   /**
